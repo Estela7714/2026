@@ -1,17 +1,25 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Necessário para trocar de cena
-using UnityEngine.InputSystem;    // Necessário para o novo Input System
-using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Estado do Jogo")]
     [SerializeField] private GameState currentState;
+
+    [Header("Dados de Seleção Temporários")]
+    public BolinhaData dadosEscolhidoJ1;
+    public BolinhaData dadosEscolhidoJ2;
+
+    [Header("Controle de Rounds")]
+    public int vitoriasJ1 = 0;
+    public int vitoriasJ2 = 0;
+    public int jogadorVencedorDaPartida = 0;
+    public string nomeBolinhaVencedora = "";
 
     private void Awake()
     {
-        // Setup do Singleton
         if (Instance == null)
         {
             Instance = this;
@@ -26,28 +34,54 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ChangeState(GameState.Iniciando);
-        // Adicione esta linha abaixo se ela não existir:
-        RequestSceneLoad("Splash"); 
+        RequestSceneLoad("Splash");
     }
 
-    // Função única para mudar o estado e avisar no Console
     public void ChangeState(GameState newState)
     {
         currentState = newState;
         Debug.Log($"<color=cyan>Estado do Jogo alterado para: {currentState}</color>");
     }
 
-    // O "Segurança": Só ele troca de cena
     public void RequestSceneLoad(string sceneName)
     {
-        // Exemplo de regra: Só muda para Gameplay se vier do Menu
         SceneManager.LoadScene(sceneName);
     }
 
-    // Alocação de Input (Simplificada para Single Player)
-    public void AssignPlayerInput(PlayerInput playerInput)
+    // Chamado pelo sistema de verificação de queda na Arena
+    public void RegistrarQuedaJogador(int idJogadorQueCaiu)
     {
-        // Aqui você poderia forçar o esquema de controle (Teclado ou Controle)
-        Debug.Log("Input alocado para o jogador.");
+        // Se o J1 caiu, ponto do J2. Se o J2 caiu, ponto do J1.
+        if (idJogadorQueCaiu == 1) vitoriasJ2++;
+        else vitoriasJ1++;
+
+        Debug.Log($"Placar Atual: J1 [{vitoriasJ1}] vs J2 [{vitoriasJ2}]");
+
+        if (vitoriasJ1 >= 2)
+        {
+            FinalizarPartida(1, dadosEscolhidoJ1.nomeDaBolinha);
+        }
+        else if (vitoriasJ2 >= 2)
+        {
+            FinalizarPartida(2, dadosEscolhidoJ2.nomeDaBolinha);
+        }
+        else
+        {
+            // Reinicia o Round atual relendo a cena de Gameplay
+            RequestSceneLoad(SceneManager.GetActiveScene().name);
+        }
+    }
+
+    private void FinalizarPartida(int idGanhador, string nomeBolinha)
+    {
+        jogadorVencedorDaPartida = idGanhador;
+        nomeBolinhaVencedora = nomeBolinha;
+
+        // Reseta placar para a próxima partida futura
+        vitoriasJ1 = 0;
+        vitoriasJ2 = 0;
+
+        ChangeState(GameState.Vitoria);
+        RequestSceneLoad("CenaVitoria");
     }
 }
