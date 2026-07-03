@@ -15,8 +15,14 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuPrincipal.unity
     guid: a4b4fa318567a38429c0ecb2033bb7d6
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/CenaSelecao.unity
+    guid: 3b1e92d0ab7952647ad0d719ec71f7be
+  - enabled: 1
+    path: Assets/Scenes/CenaGameplay.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/CenaVitoria.unity
+    guid: 400e58578e2f4524f9be591d11cf33b8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -19,9 +19,9 @@ public class MainMenuController : MonoBehaviour
 
     public void IniciarJogo()
     {
-        // Usando os nomes das funções que você tem no seu GameManager
-        GameManager.Instance.ChangeState(GameState.Gameplay);
-        GameManager.Instance.RequestSceneLoad("SampleScene");
+        // Quando clica em Iniciar no Menu, aí sim vai para a Seleção
+        GameManager.Instance.ChangeState(GameState.SelecaoBolinhas);
+        GameManager.Instance.RequestSceneLoad("CenaSelecao");
     }
 
     public void SairDoJogo()
