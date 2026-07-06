@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: NovaBolinha 3
   m_EditorClassIdentifier: Assembly-CSharp::BolinhaData
   nomeDaBolinha: Bolinha_Tanque
-  velocidadeInicial: 3.83
+  velocidadeInicial: 7.21
   forcaEmpurraoBase: 15.5
   tamanhoEscala: 1
-  massaRigidbody: 20.54
+  massaRigidbody: 7.3
   fotoMenu: {fileID: 0}
   corJogador1: {fileID: 0}
   corJogador2: {fileID: 0}

@@ -262,7 +262,7 @@ GameObject:
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!81 &330585544
 AudioListener:
@@ -731,7 +731,7 @@ Transform:
   m_GameObject: {fileID: 438639294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 132.88087, y: 0.00001, z: 3320.9653}
+  m_LocalPosition: {x: 1, y: 3.13, z: 1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -806,8 +806,8 @@ Transform:
   m_GameObject: {fileID: 469053527}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.10765, y: -54.6, z: 18}
-  m_LocalScale: {x: 200, y: 1, z: 200}
+  m_LocalPosition: {x: 137.6728, y: -31, z: 97.7481}
+  m_LocalScale: {x: 629.2501, y: 1, z: 628.34174}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1053,7 +1053,7 @@ GameObject:
   - component: {fileID: 803813712}
   m_Layer: 0
   m_Name: Bolinha_J2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1070,9 +1070,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7334be9096188a546a3bbbb5689679c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BolinhaController
-  dadosBolinha: {fileID: 0}
+  dadosBolinha: {fileID: 11400000, guid: 67b780a8a8bd4e74b8ef7a636025ac1f, type: 2}
   idJogador: 0
-  inimigo: {fileID: 0}
+  inimigo: {fileID: 988662758}
   moveAction: {fileID: -4447197579895206821, guid: 169a492008836af498f93431fe7997c1, type: 3}
   empurrarAction: {fileID: -6065022066649639319, guid: 169a492008836af498f93431fe7997c1, type: 3}
   moedasColetadas: 0
@@ -1211,7 +1211,7 @@ Transform:
   m_GameObject: {fileID: 803813711}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 3.13, z: 1}
+  m_LocalPosition: {x: -2.91, y: 3.13, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1433,7 +1433,7 @@ GameObject:
   - component: {fileID: 988662758}
   m_Layer: 0
   m_Name: Bolinha_J1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1591,9 +1591,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7334be9096188a546a3bbbb5689679c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BolinhaController
-  dadosBolinha: {fileID: 0}
+  dadosBolinha: {fileID: 11400000, guid: 67b780a8a8bd4e74b8ef7a636025ac1f, type: 2}
   idJogador: 0
-  inimigo: {fileID: 0}
+  inimigo: {fileID: 803813712}
   moveAction: {fileID: 699338661400507281, guid: 169a492008836af498f93431fe7997c1, type: 3}
   empurrarAction: {fileID: 4560125586286492281, guid: 169a492008836af498f93431fe7997c1, type: 3}
   moedasColetadas: 0
@@ -2182,7 +2182,7 @@ Transform:
   m_GameObject: {fileID: 2053586295}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 132.88087, y: 0.00001, z: 3320.9653}
+  m_LocalPosition: {x: -2.91, y: 3.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

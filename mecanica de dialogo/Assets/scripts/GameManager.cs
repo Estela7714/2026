@@ -67,8 +67,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Reinicia o Round atual relendo a cena de Gameplay
-            RequestSceneLoad(SceneManager.GetActiveScene().name);
+            // Em vez de usar GetActiveScene().name, force o nome exato da sua arena!
+            RequestSceneLoad("CenaGameplay");
         }
     }
 

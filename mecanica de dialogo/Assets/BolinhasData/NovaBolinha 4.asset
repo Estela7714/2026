@@ -16,7 +16,7 @@ MonoBehaviour:
   velocidadeInicial: 10
   forcaEmpurraoBase: 18.3
   tamanhoEscala: 2.36
-  massaRigidbody: 18.51
+  massaRigidbody: 7.4
   fotoMenu: {fileID: 0}
   corJogador1: {fileID: 0}
   corJogador2: {fileID: 0}
