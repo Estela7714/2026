@@ -4,7 +4,7 @@ using System;
 
 public class BolinhaController : MonoBehaviour
 {
-    [Header("Configurações de Dados")]
+    [Header("Configuraï¿½ï¿½es de Dados")]
     public BolinhaData dadosBolinha;
     public int idJogador; // 1 para Jogador 1, 2 para Jogador 2
     public BolinhaController inimigo;
@@ -13,7 +13,7 @@ public class BolinhaController : MonoBehaviour
     public InputActionReference moveAction;
     public InputActionReference empurrarAction;
 
-    [Header("Status em Tempo de Execução")]
+    [Header("Status em Tempo de Execuï¿½ï¿½o")]
     public int moedasColetadas = 0;
 
     private float tempoUltimoEmpurrao;
@@ -28,14 +28,14 @@ public class BolinhaController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // Inicializa a bolinha com os dados escolhidos na tela de seleção
+    // Inicializa a bolinha com os dados escolhidos na tela de seleï¿½ï¿½o
     public void Inicializar(BolinhaData dados, int id, BolinhaController oInimigo)
     {
         dadosBolinha = dados;
         idJogador = id;
         inimigo = oInimigo;
 
-        // Aplica modificações visuais e físicas do ScriptableObject
+        // Aplica modificaï¿½ï¿½es visuais e fï¿½sicas do ScriptableObject
         transform.localScale = Vector3.one * dadosBolinha.tamanhoEscala;
         rb.mass = dadosBolinha.massaRigidbody;
 
@@ -75,7 +75,7 @@ public class BolinhaController : MonoBehaviour
 
         rb.AddForce(direcaoMovimento * velocidadeAtual, ForceMode.Force);
 
-        // Limita a velocidade máxima
+        // Limita a velocidade mï¿½xima
         if (rb.linearVelocity.magnitude > velocidadeAtual)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * velocidadeAtual;
@@ -90,30 +90,21 @@ public class BolinhaController : MonoBehaviour
         tempoUltimoEmpurrao = Time.time;
         OnEmpurraoUsado?.Invoke(idJogador, tempoCooldown);
 
-        // Cálculos de distância e direção oposta
+        // Cï¿½lculos de distï¿½ncia e direï¿½ï¿½o oposta
         float distancia = Vector3.Distance(transform.position, inimigo.transform.position);
-        if (distancia < 0.1f) distancia = 0.1f; // Evita divisão por zero
+        if (distancia < 0.1f) distancia = 0.1f; // Evita divisï¿½o por zero
 
         Vector3 direcaoInimigo = (inimigo.transform.position - transform.position).normalized;
-        direcaoInimigo.y = 0f; // Garante força apenas no plano horizontal
+        direcaoInimigo.y = 0f; // Garante forï¿½a apenas no plano horizontal
 
-        // Modificador de moedas: Mais moedas = Mais força de empurrão aplicada
+        // Modificador de moedas: Mais moedas = Mais forï¿½a de empurrï¿½o aplicada
         float modificadorForcaMoeda = 1f + (moedasColetadas * 0.15f);
 
-        // Fórmula pedida: Mais perto = Mais forte. Multiplicado pela força base e moedas
+        // Fï¿½rmula pedida: Mais perto = Mais forte. Multiplicado pela forï¿½a base e moedas
         float forcaFinal = (dadosBolinha.forcaEmpurraoBase * modificadorForcaMoeda) / distancia;
 
-        // Aplica a força empurrando o inimigo para longe
+        // Aplica a forï¿½a empurrando o inimigo para longe
         inimigo.GetComponent<Rigidbody>().AddForce(direcaoInimigo * forcaFinal, ForceMode.Impulse);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Moeda"))
-        {
-            moedasColetadas++;
-            Destroy(other.gameObject);
-            // Aqui você pode tocar um som 2D usando ManejoDeSom.Instance.Play2DOneShot(...)
-        }
-    }
+    
 }

@@ -17,6 +17,6 @@ MonoBehaviour:
   forcaEmpurraoBase: 6.11
   tamanhoEscala: -0.71
   massaRigidbody: 1.91
-  fotoMenu: {fileID: 0}
-  corJogador1: {fileID: 0}
-  corJogador2: {fileID: 0}
+  fotoMenu: {fileID: 21300000, guid: c5cc67400f7e2624b9f438de5c2a6f64, type: 3}
+  corJogador1: {fileID: 2100000, guid: 1cf3c258168080a4d999bdfc92d19774, type: 2}
+  corJogador2: {fileID: 2100000, guid: 4743bd081038e114db89300f5f74d9ea, type: 2}

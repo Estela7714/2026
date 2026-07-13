@@ -1036,6 +1036,8 @@ MonoBehaviour:
   sliderCooldownJ1: {fileID: 1639581549}
   sliderCooldownJ2: {fileID: 1840700631}
   textoPlacar: {fileID: 482026097}
+  bolinhaJ1: {fileID: 988662758}
+  bolinhaJ2: {fileID: 803813712}
 --- !u!1 &803813711
 GameObject:
   m_ObjectHideFlags: 0

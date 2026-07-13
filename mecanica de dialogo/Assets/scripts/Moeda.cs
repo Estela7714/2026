@@ -2,29 +2,28 @@ using UnityEngine;
 
 public class Moeda : MonoBehaviour
 {
-    [Header("Configurações da Moeda")]
-    public float velocidadeRotacao = 100f; // Velocidade do giro no próprio eixo
+    public float velocidadeRotacao = 100f;
+    private bool jaColetada = false; // 👈 Trava para evitar disparo múltiplo
 
     void Update()
     {
-        // Faz a moeda girar continuamente para dar um efeito bonito
         transform.Rotate(Vector3.up * velocidadeRotacao * Time.deltaTime, Space.World);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Verifica se quem encostou na moeda tem o script de controle da Bolinha
+        // Se já foi coletada neste milissegundo, ignora qualquer outra colisão!
+        if (jaColetada) return;
+
         BolinhaController bolinha = other.GetComponent<BolinhaController>();
 
         if (bolinha != null)
         {
-            // Aumenta a quantidade de moedas coletadas na bolinha que encostou
+            jaColetada = true; // 👈 Ativa a trava imediatamente no primeiro contato!
+            
             bolinha.moedasColetadas++;
+            Debug.Log($"Moeda coletada por J{bolinha.idJogador}. Total: {bolinha.moedasColetadas}");
 
-            // Opcional: Se tiver sistema de áudio no seu projeto, você pode tocar o som aqui:
-            // ManejoDeSom.Instance.Play2DOneShot(somMoeda);
-
-            // Destrói a moeda da cena
             Destroy(gameObject);
         }
     }
