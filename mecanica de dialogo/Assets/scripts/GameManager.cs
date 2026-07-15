@@ -31,6 +31,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        // Se inscreve no evento de carregamento de cena da Unity
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // Remove a inscrição para evitar vazamento de memória
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     private void Start()
     {
         ChangeState(GameState.Iniciando);
@@ -45,7 +57,28 @@ public class GameManager : MonoBehaviour
 
     public void RequestSceneLoad(string sceneName)
     {
+        // Se estiver trocando para uma cena que NÃO é a gameplay, garante que a UI seja removida
+        if (sceneName != "CenaGameplay" && SceneManager.GetSceneByName("CenaUI").isLoaded)
+        {
+            SceneManager.UnloadSceneAsync("CenaUI");
+        }
+
         SceneManager.LoadScene(sceneName);
+    }
+
+    // Método chamado automaticamente sempre que qualquer cena termina de carregar
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "CenaGameplay")
+        {
+            ChangeState(GameState.Gameplay);
+
+            // Carrega a interface gráfica em modo aditivo por cima da cena do jogo
+            if (!SceneManager.GetSceneByName("CenaUI").isLoaded)
+            {
+                SceneManager.LoadScene("CenaUI", LoadSceneMode.Additive);
+            }
+        }
     }
 
     // Chamado pelo sistema de verificação de queda na Arena
@@ -59,15 +92,15 @@ public class GameManager : MonoBehaviour
 
         if (vitoriasJ1 >= 2)
         {
-            FinalizarPartida(1, dadosEscolhidoJ1.nomeDaBolinha);
+            FinalizarPartida(1, dadosEscolhidoJ1 != null ? dadosEscolhidoJ1.nomeDaBolinha : "Jogador 1");
         }
         else if (vitoriasJ2 >= 2)
         {
-            FinalizarPartida(2, dadosEscolhidoJ2.nomeDaBolinha);
+            FinalizarPartida(2, dadosEscolhidoJ2 != null ? dadosEscolhidoJ2.nomeDaBolinha : "Jogador 2");
         }
         else
         {
-            // Em vez de usar GetActiveScene().name, force o nome exato da sua arena!
+            // Recarrega a arena para o novo round
             RequestSceneLoad("CenaGameplay");
         }
     }

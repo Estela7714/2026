@@ -8,9 +8,8 @@ public class GameUIController : MonoBehaviour
     public Slider sliderCooldownJ2;
     public TMPro.TextMeshProUGUI textoPlacar;
 
-    [Header("Referências das Bolinhas (Para ler as Moedas)")]
-    public BolinhaController bolinhaJ1;
-    public BolinhaController bolinhaJ2;
+    private BolinhaController bolinhaJ1;
+    private BolinhaController bolinhaJ2;
 
     void OnEnable()
     {
@@ -26,22 +25,29 @@ public class GameUIController : MonoBehaviour
     {
         if (sliderCooldownJ1 != null) sliderCooldownJ1.value = 1f;
         if (sliderCooldownJ2 != null) sliderCooldownJ2.value = 1f;
+
+        // Procura as bolinhas na cena do jogo pelo idJogador
+        BolinhaController[] bolinhas = FindObjectsByType<BolinhaController>(FindObjectsSortMode.None);
+        foreach (var b in bolinhas)
+        {
+            if (b.idJogador == 1) bolinhaJ1 = b;
+            else if (b.idJogador == 2) bolinhaJ2 = b;
+        }
     }
 
     void Update()
     {
-        // Atualiza o texto em tempo real com as moedas coletadas de cada um
         if (bolinhaJ1 != null && bolinhaJ2 != null && textoPlacar != null)
         {
-            textoPlacar.text = $"Moedas J1: {bolinhaJ1.moedasColetadas}     Moedas J2: {bolinhaJ2.moedasColetadas}";
+            textoPlacar.text = $"Moedas J1: {bolinhaJ1.moedasColetadas}  |  Moedas J2: {bolinhaJ2.moedasColetadas}";
         }
     }
 
     void IniciarBarraCooldown(int idJogador, float tempo)
     {
-        if (idJogador == 1 && sliderCooldownJ1 != null) 
+        if (idJogador == 1 && sliderCooldownJ1 != null)
             StartCoroutine(RotinaAnimaCooldown(sliderCooldownJ1, tempo));
-        else if (idJogador == 2 && sliderCooldownJ2 != null) 
+        else if (idJogador == 2 && sliderCooldownJ2 != null)
             StartCoroutine(RotinaAnimaCooldown(sliderCooldownJ2, tempo));
     }
 
