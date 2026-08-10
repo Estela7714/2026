@@ -15,8 +15,18 @@ public class GameManager : MonoBehaviour
     [Header("Controle de Rounds")]
     public int vitoriasJ1 = 0;
     public int vitoriasJ2 = 0;
+
+    // Armazena quem venceu a RODADA ATUAL
+    public int jogadorVencedorDaRodada = 0;
+    public string nomeBolinhaVencedoraRodada = "";
+
+    // Armazena quem venceu o JOGO (0 se a partida ainda estiver em andamento)
     public int jogadorVencedorDaPartida = 0;
-    public string nomeBolinhaVencedora = "";
+    public string nomeBolinhaVencedoraPartida = "";
+
+    public bool partidaFinalizada = false;
+
+    private bool roundFinalizado = false;
 
     private void Awake()
     {
@@ -33,13 +43,11 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // Se inscreve no evento de carregamento de cena da Unity
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // Remove a inscrição para evitar vazamento de memória
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -57,23 +65,27 @@ public class GameManager : MonoBehaviour
 
     public void RequestSceneLoad(string sceneName)
     {
-        // Se estiver trocando para uma cena que NÃO é a gameplay, garante que a UI seja removida
-        if (sceneName != "CenaGameplay" && SceneManager.GetSceneByName("CenaUI").isLoaded)
+        // Se a CenaUI estiver aberta e formos sair da gameplay, descarrega a UI
+        if (sceneName != "CenaGameplay")
         {
-            SceneManager.UnloadSceneAsync("CenaUI");
+            Scene sceneUI = SceneManager.GetSceneByName("CenaUI");
+            if (sceneUI.isLoaded)
+            {
+                SceneManager.UnloadSceneAsync("CenaUI");
+            }
         }
 
-        SceneManager.LoadScene(sceneName);
+        // Carrega a cena desejada em modo Single (substitui a cena atual completamente)
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
-    // Método chamado automaticamente sempre que qualquer cena termina de carregar
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "CenaGameplay")
         {
+            roundFinalizado = false;
             ChangeState(GameState.Gameplay);
 
-            // Carrega a interface gráfica em modo aditivo por cima da cena do jogo
             if (!SceneManager.GetSceneByName("CenaUI").isLoaded)
             {
                 SceneManager.LoadScene("CenaUI", LoadSceneMode.Additive);
@@ -81,40 +93,63 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Chamado pelo sistema de verificação de queda na Arena
+    // Chamado pelo DetectorDeQueda na Arena
     public void RegistrarQuedaJogador(int idJogadorQueCaiu)
     {
-        // Se o J1 caiu, ponto do J2. Se o J2 caiu, ponto do J1.
-        if (idJogadorQueCaiu == 1) vitoriasJ2++;
-        else vitoriasJ1++;
+        if (roundFinalizado) return;
+        roundFinalizado = true;
+
+        // Se o J1 caiu, o J2 vence a rodada. Se o J2 caiu, o J1 vence.
+        if (idJogadorQueCaiu == 1)
+        {
+            vitoriasJ2++;
+            jogadorVencedorDaRodada = 2;
+            nomeBolinhaVencedoraRodada = dadosEscolhidoJ2 != null ? dadosEscolhidoJ2.nomeDaBolinha : "Jogador 2";
+        }
+        else
+        {
+            vitoriasJ1++;
+            jogadorVencedorDaRodada = 1;
+            nomeBolinhaVencedoraRodada = dadosEscolhidoJ1 != null ? dadosEscolhidoJ1.nomeDaBolinha : "Jogador 1";
+        }
 
         Debug.Log($"Placar Atual: J1 [{vitoriasJ1}] vs J2 [{vitoriasJ2}]");
 
-        if (vitoriasJ1 >= 2)
+        // Verifica se alguém atingiu a quantidade de vitórias necessária (3)
+        if (vitoriasJ1 >= 3)
         {
             FinalizarPartida(1, dadosEscolhidoJ1 != null ? dadosEscolhidoJ1.nomeDaBolinha : "Jogador 1");
         }
-        else if (vitoriasJ2 >= 2)
+        else if (vitoriasJ2 >= 3)
         {
             FinalizarPartida(2, dadosEscolhidoJ2 != null ? dadosEscolhidoJ2.nomeDaBolinha : "Jogador 2");
         }
         else
         {
-            // Recarrega a arena para o novo round
-            RequestSceneLoad("CenaGameplay");
+            // Apenas a rodada terminou (partida continua)
+            partidaFinalizada = false;
+            ChangeState(GameState.Vitoria);
+            RequestSceneLoad("CenaVitoria");
         }
     }
 
     private void FinalizarPartida(int idGanhador, string nomeBolinha)
     {
+        partidaFinalizada = true;
         jogadorVencedorDaPartida = idGanhador;
-        nomeBolinhaVencedora = nomeBolinha;
-
-        // Reseta placar para a próxima partida futura
-        vitoriasJ1 = 0;
-        vitoriasJ2 = 0;
+        nomeBolinhaVencedoraPartida = nomeBolinha;
 
         ChangeState(GameState.Vitoria);
         RequestSceneLoad("CenaVitoria");
+    }
+
+    // Método chamado para reiniciar o placar após o fim da partida completa
+    public void ResetarPartida()
+    {
+        vitoriasJ1 = 0;
+        vitoriasJ2 = 0;
+        jogadorVencedorDaPartida = 0;
+        nomeBolinhaVencedoraPartida = "";
+        partidaFinalizada = false;
     }
 }

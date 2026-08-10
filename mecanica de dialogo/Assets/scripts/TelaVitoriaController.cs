@@ -5,49 +5,73 @@ using TMPro;
 public class TelaVitoriaController : MonoBehaviour
 {
     [Header("Componentes de UI")]
-    [Tooltip("Arraste o texto que vai mostrar quem ganhou (Ex: JOGADOR 1 VENCEU!)")]
     public TextMeshProUGUI textoVencedor;
-
-    [Tooltip("Arraste o texto que vai mostrar os detalhes da bolinha utilizada")]
     public TextMeshProUGUI textoDetalhesBolinha;
+    public TextMeshProUGUI textoPlacar;
 
-    [Tooltip("Arraste o botão de voltar para a seleção")]
-    public Button btnVoltarSelecao;
+    [Tooltip("Arraste o botão de avançar")]
+    public Button btnAvancar;
+
+    [Tooltip("Texto dentro do botão")]
+    public TextMeshProUGUI textoBotao;
 
     void Start()
     {
-        // Força o estado do jogo para Vitória no GameManager
         if (GameManager.Instance != null)
         {
             GameManager.Instance.ChangeState(GameState.Vitoria);
 
-            // 1. Lê os dados diretamente do GameManager e atualiza os textos
-            int ganhador = GameManager.Instance.jogadorVencedorDaPartida;
-            string nomeBolinha = GameManager.Instance.nomeBolinhaVencedora;
+            bool jogoAcabou = GameManager.Instance.partidaFinalizada;
 
-            textoVencedor.text = $"PARABÉNS!\nJOGADOR {ganhador} VENCEU A PARTIDA!";
-            textoDetalhesBolinha.text = $"Bolinha Campeã: {nomeBolinha}";
-        }
-        else
-        {
-            textoVencedor.text = "Fim de Jogo!";
-            textoDetalhesBolinha.text = "Não foi possível carregar os dados do GameManager.";
+            if (jogoAcabou)
+            {
+                int ganhadorJogo = GameManager.Instance.jogadorVencedorDaPartida;
+                string nomeBolinha = GameManager.Instance.nomeBolinhaVencedoraPartida;
+
+                if (textoVencedor != null) textoVencedor.text = $"PARABÉNS!\nJOGADOR {ganhadorJogo} VENCEU O JOGO!";
+                if (textoDetalhesBolinha != null) textoDetalhesBolinha.text = $"Bolinha Campeã: {nomeBolinha}";
+                if (textoBotao != null) textoBotao.text = "NOVO JOGO";
+            }
+            else
+            {
+                int ganhadorRodada = GameManager.Instance.jogadorVencedorDaRodada;
+                string nomeBolinha = GameManager.Instance.nomeBolinhaVencedoraRodada;
+
+                if (textoVencedor != null) textoVencedor.text = $"JOGADOR {ganhadorRodada} VENCEU A RODADA!";
+                if (textoDetalhesBolinha != null) textoDetalhesBolinha.text = $"Bolinha: {nomeBolinha}";
+                if (textoBotao != null) textoBotao.text = "PRÓXIMA RODADA";
+            }
+
+            if (textoPlacar != null)
+            {
+                textoPlacar.text = $"PLACAR: J1 [{GameManager.Instance.vitoriasJ1}]  X  [{GameManager.Instance.vitoriasJ2}] J2";
+            }
         }
 
-        // 2. Configura o botão para retornar à tela de seleção de bolinhas
-        if (btnVoltarSelecao != null)
+        if (btnAvancar != null)
         {
-            btnVoltarSelecao.onClick.AddListener(VoltarParaSelecao);
+            // Remove ouvintes anteriores para garantir que não haja chamadas duplicadas/bloqueadas
+            btnAvancar.onClick.RemoveAllListeners();
+            btnAvancar.onClick.AddListener(AcaoBotao);
         }
     }
 
-    void VoltarParaSelecao()
+    public void AcaoBotao()
     {
-        if (GameManager.Instance != null)
+        Debug.Log("<color=yellow>Botão Avançar Clicado!</color>");
+
+        if (GameManager.Instance == null) return;
+
+        if (GameManager.Instance.partidaFinalizada)
         {
-            // Muda o estado e pede para o GameManager carregar a cena de seleção
+            GameManager.Instance.ResetarPartida();
             GameManager.Instance.ChangeState(GameState.SelecaoBolinhas);
-            GameManager.Instance.RequestSceneLoad("CenaSelecao"); // Certifique-se de usar o nome exato da sua cena
+            GameManager.Instance.RequestSceneLoad("CenaSelecao");
+        }
+        else
+        {
+            GameManager.Instance.ChangeState(GameState.SelecaoBolinhas);
+            GameManager.Instance.RequestSceneLoad("CenaSelecao");
         }
     }
 }
