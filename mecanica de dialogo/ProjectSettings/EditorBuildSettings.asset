@@ -5,26 +5,38 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/_Boot.unity
+  - enabled: 0
+    path: Assets/Scenes/Boot.unity
     guid: 033be1a6a1fae6b419b7db2dd18bc79c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Splash.unity
     guid: 57d05d0fff63bc743bedc1a9eb4ce7ed
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MenuPrincipal.unity
     guid: a4b4fa318567a38429c0ecb2033bb7d6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CenaSelecao.unity
     guid: 3b1e92d0ab7952647ad0d719ec71f7be
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CenaGameplay.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CenaVitoria.unity
     guid: 400e58578e2f4524f9be591d11cf33b8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/CenaUI.unity
     guid: bcdc21293bb3f7143a3e6794dd35259d
+  - enabled: 1
+    path: Assets/Scenes/New/_Boot.unity
+    guid: 97e99ebbb1742734fa67920ed9765480
+  - enabled: 1
+    path: Assets/Scenes/New/MainMenu.unity
+    guid: a6a3396cefe214b45b84c1a1848e12e1
+  - enabled: 1
+    path: Assets/Scenes/New/Fase 2.unity
+    guid: bd69b0abc306c654aa0950ac60e6e6f7
+  - enabled: 1
+    path: Assets/Scenes/New/Fase1.unity
+    guid: 18b961b63f0f0b64e9be272110d7a367
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
