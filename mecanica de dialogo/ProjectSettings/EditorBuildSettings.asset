@@ -33,10 +33,10 @@ EditorBuildSettings:
     path: Assets/Scenes/New/MainMenu.unity
     guid: a6a3396cefe214b45b84c1a1848e12e1
   - enabled: 1
-    path: Assets/Scenes/New/Fase 2.unity
-    guid: bd69b0abc306c654aa0950ac60e6e6f7
-  - enabled: 1
     path: Assets/Scenes/New/Fase1.unity
     guid: 18b961b63f0f0b64e9be272110d7a367
+  - enabled: 1
+    path: Assets/Scenes/New/Fase 2.unity
+    guid: bd69b0abc306c654aa0950ac60e6e6f7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
