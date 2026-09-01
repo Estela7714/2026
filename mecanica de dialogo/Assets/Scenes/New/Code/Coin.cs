@@ -3,6 +3,7 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public string coinID;
+    private bool isCollected = false; // Impede dupla coleta no mesmo frame
 
     private void Awake()
     {
@@ -11,11 +12,24 @@ public class Coin : MonoBehaviour
             coinID = transform.position.ToString();
     }
 
+    private void OnEnable()
+    {
+        // Reseta o estado caso a moeda seja reativada
+        isCollected = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        // Garante que só coleta se for o Player e se AINDA NÃO tiver sido coletada
+        if (other.CompareTag("Player") && !isCollected)
         {
-            LevelManager.Instance.CollectCoin(coinID);
+            isCollected = true; // Trava para não executar de novo
+
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.CollectCoin(coinID);
+            }
+
             gameObject.SetActive(false);
         }
     }

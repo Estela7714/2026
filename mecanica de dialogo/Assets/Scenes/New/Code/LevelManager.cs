@@ -18,6 +18,9 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        // Garante que o SaveData guarde o índice correto da fase atual
+        SaveManager.Instance.CurrentData.currentLevelIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+
         totalCoinsInLevel = FindObjectsOfType<Coin>().Length;
         SetupPhase();
     }
@@ -67,10 +70,19 @@ public class LevelManager : MonoBehaviour
     }
 
     public void TriggerVictory()
-    {
-        UIManager.Instance.ShowVictoryPanel(CurrentCoinsSession, totalCoinsInLevel);
-        SaveManager.Instance.CurrentData.currentLevelIndex++;
-        SaveManager.Instance.CurrentData.reachedCheckpoint = false;
-        SaveManager.Instance.SaveGame(0);
-    }
+{
+    // 1. Atualiza os dados no SaveManager para a PRÓXIMA FASE
+    SaveData data = SaveManager.Instance.CurrentData;
+    
+    data.currentLevelIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1; // Avança o índice da fase
+    data.reachedCheckpoint = false; // RESETA o checkpoint para a nova fase
+    data.coinsAtCheckpoint = 0;     // RESETA o contador de moedas no checkpoint
+    data.collectedCoinIDsAtCheckpoint.Clear(); // LIMPA as moedas coletadas salvas
+
+    // 2. Executa o AutoSave no Slot 0 com os dados limpos da Fase 2
+    SaveManager.Instance.SaveGame(0);
+
+    // 3. Exibe o painel de vitória na tela
+    UIManager.Instance.ShowVictoryPanel(CurrentCoinsSession, totalCoinsInLevel);
+}
 }

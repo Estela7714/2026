@@ -19,14 +19,14 @@ public class MainMenu : MonoBehaviour
 
     public void OnContinue()
     {
-        SaveManager.Instance.LoadGame(1);
+        // CORRIGIDO: O AutoSave deve carregar o slot 0 e não o slot 1
+        SaveManager.Instance.LoadGame(0);
         SceneManager.LoadScene(SaveManager.Instance.CurrentData.currentLevelIndex);
     }
 
     public void OnNewGame()
     {
         SaveManager.Instance.NewGame();
-        // Use o nome exato da sua primeira cena de fase entre aspas
         SceneManager.LoadScene("Fase1");
     }
 
@@ -51,5 +51,10 @@ public class MainMenu : MonoBehaviour
     public void OnQuit()
     {
         Application.Quit();
+
+        // Para parar o Play Mode caso esteja testando dentro da Unity
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }
